@@ -1,0 +1,13 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\action.o
+./debug\card.o
+./debug\plants.o
+./debug\zombies.o
+./debug\scene.o
+./debug\moc_mainwindow.o
+./debug\moc_action.o
+./debug\moc_card.o
+./debug\moc_scene.o
+);
