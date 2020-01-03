@@ -9,5 +9,6 @@ INPUT(
 ./debug\moc_mainwindow.o
 ./debug\moc_action.o
 ./debug\moc_card.o
+./debug\moc_plants.o
 ./debug\moc_scene.o
 );

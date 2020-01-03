@@ -1,27 +1,35 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "scene.h"
+#include <QWidget>
 #include <QDebug>
+#include <QMouseEvent>
 
 #define windowWidth  850
 #define windowHeight 600
 
 class Scene;
 
-class MainWindow : public QMainWindow
+class MainWindow : public QWidget
 {
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QPoint getMousePostion() {return this->mousePostion;}        //获取鼠标位置
 
-    void check() {qDebug() << "success check";}
+signals:
+    void rightPress();
 
 private:
     Scene *myscene;
+    QPoint mousePostion;        //鼠标位置
+
+protected:
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
 };
 
 #endif // MAINWINDOW_H

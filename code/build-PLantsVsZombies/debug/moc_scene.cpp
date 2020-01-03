@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Scene_t {
-    QByteArrayData data[5];
-    char stringdata0[43];
+    QByteArrayData data[6];
+    char stringdata0[57];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,10 +35,12 @@ QT_MOC_LITERAL(0, 0, 5), // "Scene"
 QT_MOC_LITERAL(1, 6, 7), // "mapStop"
 QT_MOC_LITERAL(2, 14, 0), // ""
 QT_MOC_LITERAL(3, 15, 13), // "startLoadCard"
-QT_MOC_LITERAL(4, 29, 13) // "startFighting"
+QT_MOC_LITERAL(4, 29, 13), // "startFighting"
+QT_MOC_LITERAL(5, 43, 13) // "placeOnePlant"
 
     },
-    "Scene\0mapStop\0\0startLoadCard\0startFighting"
+    "Scene\0mapStop\0\0startLoadCard\0startFighting\0"
+    "placeOnePlant"
 };
 #undef QT_MOC_LITERAL
 
@@ -48,7 +50,7 @@ static const uint qt_meta_data_Scene[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -56,11 +58,12 @@ static const uint qt_meta_data_Scene[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x06 /* Public */,
-       3,    0,   30,    2, 0x06 /* Public */,
+       1,    0,   34,    2, 0x06 /* Public */,
+       3,    0,   35,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,   31,    2, 0x0a /* Public */,
+       4,    0,   36,    2, 0x0a /* Public */,
+       5,    1,   37,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -68,6 +71,7 @@ static const uint qt_meta_data_Scene[] = {
 
  // slots: parameters
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    2,
 
        0        // eod
 };
@@ -81,6 +85,7 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 0: _t->mapStop(); break;
         case 1: _t->startLoadCard(); break;
         case 2: _t->startFighting(); break;
+        case 3: _t->placeOnePlant((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -101,11 +106,10 @@ void Scene::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
             }
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObject Scene::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_Scene.data,
+    { &QWidget::staticMetaObject, qt_meta_stringdata_Scene.data,
       qt_meta_data_Scene,  qt_static_metacall, nullptr, nullptr}
 };
 
@@ -120,22 +124,22 @@ void *Scene::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_Scene.stringdata0))
         return static_cast<void*>(const_cast< Scene*>(this));
-    return QObject::qt_metacast(_clname);
+    return QWidget::qt_metacast(_clname);
 }
 
 int Scene::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QObject::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

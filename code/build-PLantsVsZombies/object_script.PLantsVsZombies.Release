@@ -9,5 +9,6 @@ INPUT(
 ./release\moc_mainwindow.o
 ./release\moc_action.o
 ./release\moc_card.o
+./release\moc_plants.o
 ./release\moc_scene.o
 );

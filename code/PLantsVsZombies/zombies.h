@@ -2,7 +2,9 @@
 #define ZOMBIES_H
 
 
-class Zombies
+#include <QWidget>
+
+class Zombies : public QWidget
 {
 public:
     Zombies();

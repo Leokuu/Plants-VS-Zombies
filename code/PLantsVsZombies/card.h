@@ -12,12 +12,12 @@ class Action;           //声明 动画类
 
 #define cardWidth  50       //卡片长宽65*90
 #define CardHeight 70
-#define cardNumber 8        //卡牌数量
 #define cardMoveTime 150    //卡牌移动时间
 #define clearance  3        //间隔
 #define chooserMax 8        //上场植物数量
+#define cardNumber 9        //卡牌数量
 
-class Card : public QObject
+class Card : public QWidget
 {
     Q_OBJECT
 
@@ -27,11 +27,16 @@ public:
     void cardShow();        //卡片显示
     void loadCard();        //准备模式，加载卡片
     void fightingMode();    //战斗模式
+    void setButtonState(int n,int state);   //0隐藏  1显示  2冷却
+    int  getChooserPlant(int n) {return chooserPlant[n];}
+    int  getCardState(int n) {return cardState[n];}
+    void hideAButton(int n) {cardButton[n]->hide();}
+    //static QSize getChooserXY(int n){return QSize(82+n*(cardWidth+clearance+1), 7);}   //返回坐标
 
 signals:
     void CanStartFighting();        //加载开始战斗按钮
     void CannotStartFighting();     //隐藏开始战斗按钮
-    void PlcaePlant(int);              //放置植物
+    void PlcaePlant(int);           //放置植物
 
 private:
     MainWindow *myWindow;                   //主窗口地址
@@ -42,7 +47,7 @@ private:
     QString path0 = QString("../../graphics/Cards/");   //卡片文件夹地址
     int cardState[cardNumber];              //卡片状态数组
     int chooserNumber;                      //当前卡牌槽卡片数量
-    int chooserState[chooserMax];           //卡牌槽对应植物
+    int chooserPlant[chooserMax];           //卡牌槽对应植物
 };
 
 

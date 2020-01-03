@@ -211,7 +211,6 @@ Makefile: ../PLantsVsZombies/PLantsVsZombies.pro E:/Qt5.9.0/5.9/mingw53_32/mkspe
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/qt_config.prf \
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/win32-g++/qmake.conf \
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/exclusive_builds.prf \
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/toolchain.prf \
 		E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/default_pre.prf \
@@ -389,7 +388,6 @@ E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/qt_functions.prf:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/qt_config.prf:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/win32-g++/qmake.conf:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/spec_post.prf:
-.qmake.stash:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/exclusive_builds.prf:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/toolchain.prf:
 E:/Qt5.9.0/5.9/mingw53_32/mkspecs/features/default_pre.prf:
