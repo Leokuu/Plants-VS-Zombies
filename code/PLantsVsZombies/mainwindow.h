@@ -19,12 +19,13 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QPoint getMousePostion() {return this->mousePostion;}        //获取鼠标位置
+    Scene *myscene;
 
 signals:
+    void leftPress();
     void rightPress();
 
 private:
-    Scene *myscene;
     QPoint mousePostion;        //鼠标位置
 
 protected:

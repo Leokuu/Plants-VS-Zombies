@@ -24,9 +24,11 @@ public:
     explicit Plants(MainWindow *parent = nullptr);
     ~Plants();
     virtual void aPlantAdd(int x,int y);     //放置植物
-    virtual void fight();       //攻击模式
-    virtual void injured();     //受伤
+    virtual void fight();               //攻击模式
+    virtual void injured();             //受伤
     virtual void placeAPlant();         //放置植物 1 放置 ，0 取消
+    virtual void aFgiht();    //一次攻击
+    virtual void setFightState(char a) {fightState = a;}  //调整攻击状态
 
 signals:
     void placePostion(int x, int y);
@@ -37,18 +39,18 @@ private:
 protected:
     MainWindow *myWindow;
     QString path;
-    int frameNum;   //动画帧数
-    int postionX;   //地图位置
-    int postionY;
-    int hp;         //生命值
-    int atk;        //攻击力
-    int speed;      //攻击速度
-    int range;      //射程
-    int cooling;    //冷却
-    int cost;       //花费
-    int state;      //当前状态
-
-    void plantInit(int frameNum,int hp, int atk, int speed,
+    QMovie *pathBullet, *pathExplosion;
+    QPoint postion;     //地图位置
+    int hp;             //生命值
+    int atk;            //攻击力
+    int speed;          //攻击速度
+    int range;          //射程
+    int cooling;        //冷却
+    int cost;           //花费
+    int state;          //当前状态
+    QSize modeSize;     //模型大小
+    char fightState;    //攻击状态
+    void plantInit(int hp, int atk, int speed,
                    int range,int cooling, int cost);   //植物初始化
 
 
@@ -69,6 +71,7 @@ public:
     ~PeaShooter();
     virtual void fight();       //攻击模式
     virtual void injured();     //受伤
+    virtual void aFgiht();      //一次攻击
 
 private:
 
@@ -183,6 +186,7 @@ public:
     ~SnowPea();
     virtual void fight();       //攻击模式
     virtual void injured();     //受伤
+    virtual void aFgiht();      //一次攻击
 
 private:
 
@@ -212,7 +216,7 @@ protected:
              豌豆爸爸
 
 *********************************/
-class RepeaterPea : public Plants
+class RepeaterPea : public PeaShooter
 {
     Q_OBJECT
 
@@ -220,7 +224,6 @@ public:
     explicit RepeaterPea(MainWindow *parent = nullptr);
     ~RepeaterPea();
     virtual void fight();       //攻击模式
-    virtual void injured();     //受伤
 
 private:
 
@@ -232,7 +235,7 @@ protected:
 /*********************** 植物数据 *******************************
  *
  * NUM    NMAE     HP  ATK  SPEED  RANGE  COOLING  COST   frame
- *  0   豌豆射手   100   20   1400   ALL     7500    100    13
+ *  0   豌豆射手   300   20   1400   ALL     7500    100    13
  *
  *
  *

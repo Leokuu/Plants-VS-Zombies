@@ -12,15 +12,24 @@ Action::Action(MainWindow *parent)
 {
     this->mywindow = parent;
     this->timer = new QTimer(this);   //创建计时器
-    this->timer->start(timerFrequency);      //计时器5ms刷新一次
+    this->timer->setTimerType(Qt::PreciseTimer);
+    this->timer->start(timerFrequency);      //计时器刷新频率 10Hz
     this->n = 0;
 }
 
 void Action::move()
 {
     myWidget->move( (int)(startX+preX* ++n), (int)(startY+ preY* n));
-   // qDebug() << "In move "<<myWidget->pos().x() << " " <<myWidget->pos().y();
+    //qDebug() << "In move "<<myWidget->pos().x() << " " <<myWidget->pos().y();
+    if (pea) emit peaPos(myWidget->x());
+    if (myWidget->pos().x() > 850)
+    {
+        //qDebug() << "---preX:" << preX << "--preY:" << preY << "---" <<n;
+        emit OutOfMap();
+        disconnect(timer, &QTimer::timeout, this, 0);   //断开连接
+    }
     if (n==moveNum) {      //移动完成
+        this->n = 0;
         disconnect(timer, &QTimer::timeout, this, 0);   //断开连接
         myWidget->move(endX, endY);                     //修正误差
         //qDebug() << "move dowm "<<myWidget->pos().x() << " " <<myWidget->pos().y();
@@ -39,9 +48,6 @@ void Action::totalMove(int x, int y, int time)
     this->preX = (float)(endX - startX) / moveNum;    //单次移动X轴
     this->preY = (float)(endY - startY) / moveNum;    //单次移动Y轴
     this->n = 0;                                      //计数清零
-    //qDebug() << "start location"<< startX << startY << moveNum;
-    //qDebug() << "end location  "<< x << y;
-    //qDebug() << "pre move      "<< QString("%1 %2").arg(preX).arg(preY);
     //连接移动信号槽
     connect(timer, &QTimer::timeout, this, &this->move);
 
@@ -49,10 +55,11 @@ void Action::totalMove(int x, int y, int time)
 
 
 //根据方向移动
-void Action::widgetMove(QLabel *label, int x, int y, int time)
+void Action::widgetMove(QLabel *label, int x, int y, int time, int pea)
 {
     this->myWidget = (QWidget*) label;
     this->totalMove(x+myWidget->pos().x(), y+myWidget->pos().y(), time);
+    this->pea = pea;
 }
 
 void Action::widgetMove(QPushButton *button, int x, int y, int time)
@@ -77,7 +84,7 @@ void Action::widgetLocate(QPushButton *button, int x, int y, int time)
 
 //控件跟随鼠标
 #define mouseXY  mywindow->getMousePostion()
-void Action::widgetMouse(QPushButton *button, QLabel *label)
+void Action::widgetMouse(QPushButton *button, QLabel *label, QSize size)
 {
     //放置位置显示标志
     QGraphicsOpacityEffect *o = new QGraphicsOpacityEffect;
@@ -86,41 +93,35 @@ void Action::widgetMouse(QPushButton *button, QLabel *label)
 
     QPoint p;
     button->raise();
-    this->startX = button->pos().x();                 //起始坐标X
-    this->startY = button->pos().y();                 //起始坐标Y
+    this->startX = button->pos().x();                 //中心坐标X
+    this->startY = button->pos().y();                 //中心坐标Y
 
     connect(timer, &QTimer::timeout, [=]()mutable{             //跟随鼠标移动
-        button->move(mouseXY.x()-25, mouseXY.y()-35);   //鼠标位于植物中心
+        button->move(mouseXY.x()-25, mouseXY.y()-35);   //植物位于鼠标中心
         p = Scene::getPlacePostion((mouseXY.x()-75)/mapPreX, (mouseXY.y()-90)/mapPreY);
-        label->move(p.x(),p.y());
+        label->move(p.x()-size.width()/2, p.y()-size.height()/2);
+        if (mywindow->myscene->getArrayPlants((mouseXY.x()-75)/mapPreX, (mouseXY.y()-90)/mapPreY)==1){
+            label->hide();
+            button->blockSignals(true);
+        }
+        else {
+            label->show();
+            button->blockSignals(false);
+        }
     });
 
     connect(mywindow, &MainWindow::rightPress, [=](){   //右键取消放置
-        disconnect(timer, &QTimer::timeout, this, 0);
+        disconnect(timer, &QTimer::timeout, 0, 0);
         label->hide();
         emit DonotPlace();
     });
 
     connect(button, &QPushButton::pressed, [=](){       //左键确认放置植物
-        disconnect(timer, &QTimer::timeout, this, 0);
+        disconnect(timer, &QTimer::timeout, 0, 0);
         label->hide();
         emit FinishPlace(mouseXY);
     });
 }
-
-//植物左右晃
-void Action::plantWave(QLabel *label, QString path,  int frameNum)
-{
-    this->timer->start( (int)1000/frameNum );      //计时器75ms刷新一次
-    int i=0;
-    connect(timer, &QTimer::timeout, [=]()mutable{
-            i = (i+1) % frameNum;
-            label->setPixmap(QPixmap(QString("%1%2.png").arg(path).arg(i)));
-    });
-}
-
-
-
 
 
 

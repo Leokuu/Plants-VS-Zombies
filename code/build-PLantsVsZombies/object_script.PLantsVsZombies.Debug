@@ -11,4 +11,5 @@ INPUT(
 ./debug\moc_card.o
 ./debug\moc_plants.o
 ./debug\moc_scene.o
+./debug\moc_zombies.o
 );

@@ -27,7 +27,6 @@ void Card::loadCard()
     path[7] = QString("%1card_chomper.png").arg(path0);         //食人花
     path[8] = QString("%1card_repeaterpea.png").arg(path0);     //豌豆爸爸
 
-
     for (i=0; i<cardNumber; i++)
     {
         cardButton[i] = new QPushButton(myWindow);           //创建按钮
@@ -50,7 +49,6 @@ void Card::cardShow()
         cardButton[i]->show();      //显示卡片
         cardState[i] = -1;          //状态为1，即在全体植物栏
     }
-
     for (i=0; i<cardNumber; i++)
     {
         myAction[i] = new Action();    //创建动画对象
@@ -106,7 +104,9 @@ void Card::fightingMode()
         k = this->getChooserPlant(i);
         disconnect(cardButton[k], &QPushButton::clicked, 0,0);
         connect(cardButton[k], &QPushButton::clicked, [=](){emit Card::PlcaePlant(k);});
+        //
     }
+
 }
 
 Card::~Card()

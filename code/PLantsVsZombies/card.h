@@ -36,7 +36,7 @@ public:
 signals:
     void CanStartFighting();        //加载开始战斗按钮
     void CannotStartFighting();     //隐藏开始战斗按钮
-    void PlcaePlant(int);           //放置植物
+    void PlcaePlant(int);           //放置植物  connect in Scene.cpp
 
 private:
     MainWindow *myWindow;                   //主窗口地址

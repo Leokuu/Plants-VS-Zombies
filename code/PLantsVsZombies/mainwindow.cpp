@@ -22,7 +22,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    if (e->button() == Qt::LeftButton) qDebug() << "----left----";
+    if (e->button() == Qt::LeftButton)
+    {
+        emit leftPress();
+        qDebug() << "----left----";
+    }
     if (e->button() == Qt::RightButton) emit rightPress();
 }
 

@@ -716,7 +716,7 @@ void RepeaterPea::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
 }
 
 const QMetaObject RepeaterPea::staticMetaObject = {
-    { &Plants::staticMetaObject, qt_meta_stringdata_RepeaterPea.data,
+    { &PeaShooter::staticMetaObject, qt_meta_stringdata_RepeaterPea.data,
       qt_meta_data_RepeaterPea,  qt_static_metacall, nullptr, nullptr}
 };
 
@@ -731,12 +731,12 @@ void *RepeaterPea::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_RepeaterPea.stringdata0))
         return static_cast<void*>(const_cast< RepeaterPea*>(this));
-    return Plants::qt_metacast(_clname);
+    return PeaShooter::qt_metacast(_clname);
 }
 
 int RepeaterPea::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = Plants::qt_metacall(_c, _id, _a);
+    _id = PeaShooter::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "card.h"
+#include "zombies.h"
 #include "plants.h"
 
 #define mapWdith  1400  //地图宽度
@@ -24,6 +25,14 @@ class MainWindow;
 class Action;
 class Card;
 class Plants;
+class Zombies;
+
+//僵尸链表函数
+typedef struct ZombieARRAY
+{
+    Zombies *current;
+    ZombieARRAY *latter;
+} *qaq;
 
 class Scene : public QWidget
 {
@@ -34,14 +43,20 @@ public:
     void mapDaytime();               //加载地图：白天
     static QPoint getPlacePostion(int x,int y) {return Scene::placePostion[x][y];}
     void setArrayPlants(int x, int y, Plants *p) {arrayPlants[x][y] = p;}
+    char getArrayPlants(int x, int y) {return (int)arrayPlants[x][y]>0?1:0;}
+    void zombiesManage();       //僵尸管理函数
+
+    ZombieARRAY *zombieArray[5];
+    Zombies *firstZombie[5];
 
 public slots:
     void startFighting();       //开始战斗
     void placeOnePlant(int);    //放置植物
+    void chooseShover();        //选择铲子
 
 signals:
-    void mapStop();             //地图结束移动
-    void startLoadCard();       //开始加载卡片
+    void mapStop();             //地图结束移动 connect in Scene
+    void startLoadCard();       //开始加载卡片 connect in Scene
 
 private:
     MainWindow *myWindow;       //当前窗口
@@ -49,9 +64,12 @@ private:
     QLabel *map;                //地图
     QLabel *chooser;            //上场植物槽
     QLabel *cardpanel;          //全部植物选择槽
+    QLabel *shoverSlot;         //铲子槽
+    QPushButton *shover;        //铲子
     QPushButton *startButton;   //开始战斗按钮
     Plants *arrayPlants[9][5];
     static QPoint placePostion[9][5];
 };
+
 
 #endif // SCENE_H
