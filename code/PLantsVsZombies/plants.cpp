@@ -130,8 +130,9 @@ void PeaShooter::fight()        //植物攻击
 
 void PeaShooter::aFgiht()       //一次攻击特效
 {
-    Zombies *firstZombie = this->myWindow->myscene->firstZombie[postion.y()];
-    if (firstZombie == nullptr) return;
+    if (Zombies::ifEmptyInALine(postion.y())) // 没有僵尸
+        return;
+
     Action *action = new Action(myWindow);
     QLabel *bullet = new QLabel(myWindow);
     bullet->setMovie(pathBullet);
@@ -141,6 +142,7 @@ void PeaShooter::aFgiht()       //一次攻击特效
     bullet->raise();
     bullet->setMouseTracking(true);
     action->widgetMove(bullet,1000,0,3000,postion.y());     //发射豌豆 biubiubiu
+
     connect(action, &Action::peaPos, [=](int peaPosX){      //打到僵尸没有
         if (firstZombie != nullptr && firstZombie->getPostion() <= peaPosX)
         {

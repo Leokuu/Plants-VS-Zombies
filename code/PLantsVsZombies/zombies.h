@@ -5,6 +5,8 @@
 #include <QMovie>
 #include <mainwindow.h>
 
+typedef QVector<Zombies *> ZombiesVector;
+
 //--------  僵尸父类  --------//
 class Zombies : public QWidget
 {
@@ -19,6 +21,10 @@ public:
     virtual void creatAZombies();   //生成僵尸
     virtual int getPostion() {return label->pos().x()+66;}  //返回当前位置
     virtual int getState() {return this->state;}
+
+    static void addAZombie(MainWindow *parent, uint8_t line);
+    static bool ifEmptyInALine(uint8_t line);
+    static Zombies *firstZombie(uint8_t line);
 
 protected:
     MainWindow *myWindow;
@@ -35,9 +41,10 @@ protected:
     int speed;
     int state;
 
+    static ZombiesVector zombiesVector[5];
+
     void zombieInit(int frameNum,int hp, int atk,
                     int speed, int state); //僵尸初始化
-
 
 };
 

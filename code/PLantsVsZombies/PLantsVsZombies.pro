@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    bullets.cpp \
         main.cpp \
         mainwindow.cpp \
     action.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     scene.cpp
 
 HEADERS += \
+    bullets.h \
         mainwindow.h \
     action.h \
     card.h \

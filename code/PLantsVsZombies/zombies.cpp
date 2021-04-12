@@ -11,6 +11,8 @@
 //             僵尸父类
 //
 //------------------------------------------------------------------------
+ZombiesVector Zombies::zombiesVector[5] = {};
+
 Zombies::Zombies(MainWindow *parent, int line)
 {
     this->myWindow = parent;
@@ -52,6 +54,46 @@ Zombies::~Zombies()
 
 }
 
+////////////////////////////////////////////////////////////
+// static
+void Zombies::addAZombie(MainWindow *parent, uint8_t line)
+{
+    // 在指定行数添加一只僵尸
+    Zombies *zombie = new NormalZombie(parent);
+    Zombies::zombiesVector[line].push_back(zombie);
+
+}
+
+
+Zombies *Zombies::firstZombie(uint8_t line)
+{
+    ZombiesVector &zv = Zombies::zombiesVector[line];
+
+    if (zv.size() == 0)
+        return nullptr;
+
+    ZombiesVector::iterator i =zv.begin();
+    Zombies *firstZombie = *i;
+
+    for (i+=1; i<zv.end(); i++)
+    {
+        if (firstZombie->getPostion() > (*i)->getPostion())
+            firstZombie = *i;
+    }
+
+    return firstZombie;
+}
+
+
+bool Zombies::ifEmptyInALine(uint8_t line)
+{
+    if (Zombies::zombiesVector[line].size() == 0)
+        return true;
+    else
+        return false;
+}
+
+
 //----------------------------------------------------------------------
 //              普通僵尸
 //
@@ -62,6 +104,7 @@ NormalZombie::NormalZombie(MainWindow *parent, int line)
     this->line = line;
     this->path = QString("../../graphics/Zombies/Zombie/");
     zombieInit(22, 270, 100, 4700, 0);
+
     creatAZombies();
 }
 
@@ -76,9 +119,10 @@ void NormalZombie::creatAZombies()
     label->setGeometry(800, 20+100*line, 166, 144);
     label->show();
     myGif->start();
-    this->action = new Action();
 
+    this->action = new Action();
     action->widgetMove(label, -82*13, 0, 6000*13);     //平动
+
 }
 
 void NormalZombie::fight()

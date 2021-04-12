@@ -19,7 +19,7 @@ Action::Action(MainWindow *parent)
 
 void Action::move()
 {
-    myWidget->move( (int)(startX+preX* ++n), (int)(startY+ preY* n));
+    myWidget->move( (int)(startX+preX* (++n)), (int)(startY+ preY* n));
     //qDebug() << "In move "<<myWidget->pos().x() << " " <<myWidget->pos().y();
     if (pea) emit peaPos(myWidget->x());
     if (myWidget->pos().x() > 850)

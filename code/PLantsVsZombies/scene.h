@@ -26,6 +26,7 @@ class Action;
 class Card;
 class Plants;
 class Zombies;
+class Bullets;
 
 //僵尸链表函数
 typedef struct ZombieARRAY
@@ -43,16 +44,17 @@ public:
     void mapDaytime();               //加载地图：白天
     static QPoint getPlacePostion(int x,int y) {return Scene::placePostion[x][y];}
     void setArrayPlants(int x, int y, Plants *p) {arrayPlants[x][y] = p;}
-    char getArrayPlants(int x, int y) {return (int)arrayPlants[x][y]>0?1:0;}
+    char getArrayPlants(int x, int y) {return arrayPlants[x][y]>0?1:0;}
     void zombiesManage();       //僵尸管理函数
+    void bulletManage();        //子弹管理
 
     ZombieARRAY *zombieArray[5];
-    Zombies *firstZombie[5];
 
 public slots:
     void startFighting();       //开始战斗
     void placeOnePlant(int);    //放置植物
     void chooseShover();        //选择铲子
+    void fightDetecion();       //战斗检测
 
 signals:
     void mapStop();             //地图结束移动 connect in Scene
@@ -68,7 +70,9 @@ private:
     QPushButton *shover;        //铲子
     QPushButton *startButton;   //开始战斗按钮
     Plants *arrayPlants[9][5];
-    static QPoint placePostion[9][5];
+    static QPoint placePostion[9][5];    
+
+    QTimer *timer;
 };
 
 
