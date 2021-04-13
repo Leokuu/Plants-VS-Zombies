@@ -6,6 +6,8 @@
 #include <QWidget>
 #include "mainwindow.h"
 
+class Bullets;
+
 typedef QVector<Bullets *> BulletsVector;
 
 class Bullets : public QWidget
@@ -15,17 +17,19 @@ class Bullets : public QWidget
 public:
     explicit Bullets(MainWindow *parent = nullptr, int line=0, int xPos=0);
     ~Bullets();
-    virtual void create();
+    virtual void fight(int);
 
-    static void addABullet(MainWindow *parent, int line);
+    static void addABullet(MainWindow *parent, int line, int xPos);
 
 protected:
     MainWindow *myWindow;
     QString path;
     Action *action;
+    QLabel *bullet;
     QMovie *myGif;
     QMovie *pathBullet;
     QMovie *pathExplosion;
+
     int line;
 
     static BulletsVector bulletsVector[5];

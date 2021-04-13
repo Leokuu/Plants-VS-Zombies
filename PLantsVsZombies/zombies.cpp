@@ -59,7 +59,7 @@ Zombies::~Zombies()
 void Zombies::addAZombie(MainWindow *parent, uint8_t line)
 {
     // 在指定行数添加一只僵尸
-    Zombies *zombie = new NormalZombie(parent);
+    Zombies *zombie = new NormalZombie(parent, line);
     Zombies::zombiesVector[line].push_back(zombie);
 
 }
@@ -72,7 +72,7 @@ Zombies *Zombies::firstZombie(uint8_t line)
     if (zv.size() == 0)
         return nullptr;
 
-    ZombiesVector::iterator i =zv.begin();
+    ZombiesVector::iterator i = zv.begin();
     Zombies *firstZombie = *i;
 
     for (i+=1; i<zv.end(); i++)
@@ -102,7 +102,7 @@ NormalZombie::NormalZombie(MainWindow *parent, int line)
 {
     this->myWindow = parent;
     this->line = line;
-    this->path = QString("../../graphics/Zombies/Zombie/");
+    this->path = QString("../graphics/Zombies/Zombie/");
     zombieInit(22, 270, 100, 4700, 0);
 
     creatAZombies();
@@ -149,6 +149,7 @@ void NormalZombie::injury(int atk)
         l->show();
         timer0->start(1000);
     }
+
     connect(timer0, &QTimer::timeout, [=]()mutable{
         timer0->stop();
         delete m;

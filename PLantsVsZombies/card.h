@@ -44,7 +44,7 @@ private:
     QSize cardXY[cardNumber];               //按钮初始坐标
     Action *myAction[cardNumber];           //动画类数组
     QString path[cardNumber];               //图片地址数组
-    QString path0 = QString("../../graphics/Cards/");   //卡片文件夹地址
+    QString path0 = QString("../graphics/Cards/");   //卡片文件夹地址
     int cardState[cardNumber];              //卡片状态数组
     int chooserNumber;                      //当前卡牌槽卡片数量
     int chooserPlant[chooserMax];           //卡牌槽对应植物

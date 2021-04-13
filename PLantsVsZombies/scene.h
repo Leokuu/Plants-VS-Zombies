@@ -5,11 +5,16 @@
 #include <QObject>
 #include <QWidget>
 #include <QPoint>
+#include <QLabel>
+#include <QDebug>
+#include <QMouseEvent>
+
 #include "mainwindow.h"
 #include "action.h"
 #include "card.h"
-#include "zombies.h"
 #include "plants.h"
+#include "zombies.h"
+#include "bullets.h"
 
 #define mapWdith  1400  //地图宽度
 #define mapHeight 600   //地图长度

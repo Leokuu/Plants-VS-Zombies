@@ -1,11 +1,4 @@
 #include "scene.h"
-#include "mainwindow.h"
-#include "card.h"
-#include "action.h"
-#include "zombies.h"
-#include <QLabel>
-#include <QDebug>
-#include <QMouseEvent>
 
 Scene::Scene(MainWindow *parent)
 {
@@ -25,7 +18,7 @@ void Scene::mapDaytime()
 {
     //加载地图
     this->map = new QLabel(myWindow);                            //加载地图
-    map->setPixmap(QPixmap("../../graphics/Map/map0.jpg"));    //加载地图，以pro文件为起点
+    map->setPixmap(QPixmap("../graphics/Map/Sunday.jpg"));    //加载地图，以pro文件为起点
     map->setGeometry(0, 0, mapWdith, mapHeight);
     map->setMouseTracking(true);
 
@@ -40,20 +33,20 @@ void Scene::mapDaytime()
 
     //加载上场植物选择糟
     this->chooser = new QLabel(myWindow);
-    chooser->setPixmap(QPixmap("../../graphics/Screen/ChooserBackground.png"));
+    chooser->setPixmap(QPixmap("../graphics/Screen/ChooserBackground.png"));
     chooser->setStyleSheet("border:2px groove saddlebrown;border-radius:8px;");
     chooser->setGeometry(0, 0, chooserWidth, chooserHeight);
     chooser->setMouseTracking(true);
     chooser->hide();
     //加载植物种植选择糟
     this->cardpanel = new QLabel(myWindow);
-    cardpanel->setPixmap(QPixmap("../../graphics/Screen/PanelBackground.png"));
+    cardpanel->setPixmap(QPixmap("../graphics/Screen/PanelBackground.png"));
     cardpanel->setStyleSheet("border:2px groove sienna;border-radius:8px;");
     cardpanel->setGeometry(0, chooserHeight, panelWidth, panelHeight);
     cardpanel->hide();
     //加载铲子
     this->shoverSlot = new QLabel(myWindow);
-    shoverSlot->setPixmap(QPixmap("../../graphics/Screen/shovelSlot.png"));
+    shoverSlot->setPixmap(QPixmap("../graphics/Screen/shovelSlot.png"));
     shoverSlot->setGeometry(522, 0, 84, 87);
     shoverSlot->hide();
 
@@ -71,7 +64,7 @@ void Scene::mapDaytime()
         this->myCard->cardShow();          //开始卡片选择
 
         this->startButton = new QPushButton(myWindow);                 //创建开始战斗按钮
-        startButton->setIcon(QIcon("../../graphics/Screen/StartButton.png")); //设置图表
+        startButton->setIcon(QIcon("../graphics/Screen/StartButton.png")); //设置图表
         startButton->setIconSize(QSize(154, 37));           //设置图片大小
         startButton->setGeometry(157, 547, 154, 37);        //设置位置，大小
         startButton->hide();                                //先隐藏
@@ -113,7 +106,7 @@ void Scene::startFighting()         //开始战斗
     //铲子
     this->shover = new QPushButton(myWindow);
     shover->setFlat(true);
-    shover->setIcon(QIcon(QString("../../graphics/Screen/shovel.png")));                    //设置图表
+    shover->setIcon(QIcon(QString("../graphics/Screen/shovel.png")));                    //设置图表
     shover->setIconSize(QSize(70,74));
     shover->setGeometry(522, 0, 70, 74);     //设置位置，大小
     shover->setMouseTracking(true);
@@ -211,6 +204,11 @@ void Scene::bulletManage()
 void Scene::fightDetecion()
 {
     for (uint8_t i=0; i<5; i++) {
+
+        BulletsVector::iterator j;
+
+
+        //connect(action, &Action::peaPos, [=](int peaPosX){      //打到僵尸没有
 
     }
 }

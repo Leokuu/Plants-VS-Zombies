@@ -5,6 +5,8 @@
 #include <QMovie>
 #include <mainwindow.h>
 
+class Zombies;
+
 typedef QVector<Zombies *> ZombiesVector;
 
 //--------  僵尸父类  --------//
@@ -47,6 +49,7 @@ protected:
                     int speed, int state); //僵尸初始化
 
 };
+
 
 //------  普通僵尸 ------//
 class NormalZombie : public Zombies

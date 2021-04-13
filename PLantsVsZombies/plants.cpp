@@ -113,9 +113,9 @@ PeaShooter::PeaShooter(MainWindow *parent)
     this->plantInit(300, 20, 1400, 1, 7500, 100);
     this->fightState = 0;
     this->modeSize = QSize(71, 71);
-    this->path = QString("../../graphics/Plants/Peashooter/");
-    this->pathBullet = new QMovie("../../graphics/Bullets/Pea0.gif");
-    this->pathExplosion = new QMovie("../../graphics/Bullets/PeaExplosion.gif");
+    this->path = QString("../graphics/Plants/Peashooter/");
+    this->pathBullet = new QMovie("../graphics/Bullets/Pea0.gif");
+    this->pathExplosion = new QMovie("../graphics/Bullets/PeaExplosion.gif");
     fight();    //开启攻击
 }
 
@@ -124,51 +124,18 @@ void PeaShooter::fight()        //植物攻击
 
     QTimer *timer = new QTimer(this);   //创建计时器
     timer->start(1400);                 //计时器1400ms刷新一次
-
-    connect(timer, &QTimer::timeout, [=](){if (fightState) this->aFgiht();});
+    // 生产一个子弹
+    connect(timer, &QTimer::timeout, [=](){
+        if (!Zombies::ifEmptyInALine(this->postion.y()))
+        {
+            //发射豌豆 biubiubiu
+            Bullets::addABullet(myWindow, postion.y(), postion.x());
+        }
+    });
 }
 
 void PeaShooter::aFgiht()       //一次攻击特效
 {
-    if (Zombies::ifEmptyInALine(postion.y())) // 没有僵尸
-        return;
-
-    Action *action = new Action(myWindow);
-    QLabel *bullet = new QLabel(myWindow);
-    bullet->setMovie(pathBullet);
-    pathBullet->start();
-    bullet->setGeometry(postion.x()*82+100, postion.y()*100+90, 56, 34);
-    bullet->show();
-    bullet->raise();
-    bullet->setMouseTracking(true);
-    action->widgetMove(bullet,1000,0,3000,postion.y());     //发射豌豆 biubiubiu
-
-    connect(action, &Action::peaPos, [=](int peaPosX){      //打到僵尸没有
-        if (firstZombie != nullptr && firstZombie->getPostion() <= peaPosX)
-        {
-            action->blockSignals(true);
-            bullet->hide();
-            Action *action = new Action();
-            QLabel *label = new QLabel(myWindow);
-            label->setMovie(pathExplosion);
-            pathExplosion->start();
-            label->setGeometry(peaPosX, postion.y()*100+90, 52, 46);
-            label->show();
-            bullet->setMouseTracking(true);
-            action->widgetMove(label, 0, 0, 200);
-            connect(action, &Action::moveFinish, [=](){
-                delete action;
-                delete label;
-            });
-            firstZombie->injury(this->atk);
-        }
-    });
-
-    connect(action, &Action::OutOfMap, [=](){   //到点清除
-        //bullet->hide();
-        delete action;
-        delete bullet;
-    });
 
 }
 
@@ -191,7 +158,7 @@ SunFlower::SunFlower(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(71, 71);
-    this->path = QString("../../graphics/Plants/SunFlower/SunFlower_");
+    this->path = QString("../graphics/Plants/SunFlower/SunFlower_");
 }
 
 void SunFlower::fight()
@@ -217,7 +184,7 @@ WallNut::WallNut(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(65, 73);
-    this->path = QString("../../graphics/Plants/WallNut/WallNut/WallNut_");
+    this->path = QString("../graphics/Plants/WallNut/WallNut/WallNut_");
 }
 
 void WallNut::fight()
@@ -243,7 +210,7 @@ CherryBomb::CherryBomb(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(100, 66);
-    this->path = QString("../../graphics/Plants/CherryBomb/CherryBomb_");
+    this->path = QString("../graphics/Plants/CherryBomb/CherryBomb_");
 }
 
 void CherryBomb::fight()
@@ -270,7 +237,7 @@ Squash::Squash(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(90, 90);
-    this->path = QString("../../graphics/Plants/Squash/Squash/Squash_");
+    this->path = QString("../graphics/Plants/Squash/Squash/Squash_");
 }
 
 void Squash::fight()
@@ -298,7 +265,7 @@ PotatoMine::PotatoMine(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(75, 55);
-    this->path = QString("../../graphics/Plants/PotatoMine/PotatoMineInit/PotatoMineInit_");
+    this->path = QString("../graphics/Plants/PotatoMine/PotatoMineInit/PotatoMineInit_");
 }
 
 void PotatoMine::fight()
@@ -327,7 +294,7 @@ SnowPea::SnowPea(MainWindow *parent)
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(71, 71);
     this->fightState = 0;
-    this->path = QString("../../graphics/Plants/SnowPea/SnowPea_");
+    this->path = QString("../graphics/Plants/SnowPea/SnowPea_");
     fight();
 }
 
@@ -345,7 +312,7 @@ void SnowPea::aFgiht()       //一次攻击特效
 {
     Action *action = new Action(myWindow);
     QLabel *bullet = new QLabel(myWindow);
-    bullet->setPixmap(QPixmap("../../graphics/Bullets/PeaIce/PeaIce_0.png"));
+    bullet->setPixmap(QPixmap("../graphics/Bullets/PeaIce/PeaIce_0.png"));
     bullet->setGeometry(postion.x()*82+120 ,postion.y()*100+90, 56, 34);
     bullet->show();
     bullet->raise();
@@ -379,7 +346,7 @@ Chomper::Chomper(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(110, 100);
-    this->path = QString("../../graphics/Plants/Chomper/Chomper/Chomper_");
+    this->path = QString("../graphics/Plants/Chomper/Chomper/Chomper_");
 }
 
 void Chomper::fight()
@@ -407,9 +374,9 @@ RepeaterPea::RepeaterPea(MainWindow *parent)
     this->myWindow = parent;
     this->plantInit(100, 20, 1400, 1, 7500, 100);
     this->modeSize = QSize(71, 71);
-    this->pathBullet = new QMovie("../../graphics/Bullets/Pea0.gif");
-    this->pathExplosion = new QMovie("../../graphics/Bullets/PeaExplosion.gif");
-    this->path = QString("../../graphics/Plants/Repeater/");
+    this->pathBullet = new QMovie("../graphics/Bullets/Pea0.gif");
+    this->pathExplosion = new QMovie("../graphics/Bullets/PeaExplosion.gif");
+    this->path = QString("../graphics/Plants/Repeater/");
     fight();    //开启攻击
 }
 
