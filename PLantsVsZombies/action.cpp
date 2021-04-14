@@ -19,16 +19,15 @@ Action::Action(MainWindow *parent)
 
 void Action::move()
 {
-    myWidget->move( (int)(startX+preX* (++n)), (int)(startY+ preY* n));
-    //qDebug() << "In move "<<myWidget->pos().x() << " " <<myWidget->pos().y();
-    if (pea) emit peaPos(myWidget->x());
-    if (myWidget->pos().x() > 850)
-    {
-        //qDebug() << "---preX:" << preX << "--preY:" << preY << "---" <<n;
-        emit OutOfMap();
-        disconnect(timer, &QTimer::timeout, this, 0);   //断开连接
-    }
-    if (n==moveNum) {      //移动完成
+    ++n;
+    myWidget->move( (int)(startX+preX* (n)), (int)(startY+ preY* n));
+    xPos += preX;
+    yPos += preY;
+    //if (pea) qDebug() << xPos;
+    //if (pea) qDebug() << "In move "<<myWidget->pos().x() << " " <<myWidget->pos().y();
+    //if (pea) emit peaPos(myWidget->x());
+
+    if (n == moveNum) {      //移动完成
         this->n = 0;
         disconnect(timer, &QTimer::timeout, this, 0);   //断开连接
         myWidget->move(endX, endY);                     //修正误差
@@ -42,6 +41,8 @@ void Action::totalMove(int x, int y, int time)
 {
     this->startX = myWidget->pos().x();               //起始坐标X
     this->startY = myWidget->pos().y();               //起始坐标Y
+    this->xPos = startX;                              //记录坐标
+    this->yPos = startY;                              //记录坐标
     this->endX = x;                                   //结束坐标X
     this->endY = y;                                   //结束坐标Y
     this->moveNum = time / timerFrequency;            //移动次数
@@ -49,7 +50,7 @@ void Action::totalMove(int x, int y, int time)
     this->preY = (float)(endY - startY) / moveNum;    //单次移动Y轴
     this->n = 0;                                      //计数清零
     //连接移动信号槽
-    connect(timer, &QTimer::timeout, this, &this->move);
+    connect(timer, &QTimer::timeout, this, &Action::move);
 
 }
 

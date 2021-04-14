@@ -15,11 +15,13 @@ class Bullets : public QWidget
     Q_OBJECT
 
 public:
-    explicit Bullets(MainWindow *parent = nullptr, int line=0, int xPos=0);
+    explicit Bullets(MainWindow *parent = nullptr, int line=0, int xPos=0, int injury=0);
     ~Bullets();
-    virtual void fight(int);
+    virtual void fight();
 
-    static void addABullet(MainWindow *parent, int line, int xPos);
+    static void addABullet(MainWindow *parent, int line, int xPos, int atk);
+    static int collsionDetection(int line, int xPos);
+    static void outOfMapDetection(int line);
 
 protected:
     MainWindow *myWindow;
@@ -31,6 +33,7 @@ protected:
     QMovie *pathExplosion;
 
     int line;
+    int atk;
 
     static BulletsVector bulletsVector[5];
 

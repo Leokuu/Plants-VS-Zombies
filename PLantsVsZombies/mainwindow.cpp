@@ -24,10 +24,14 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton)
     {
+        QPoint p = this->getMousePostion();
         emit leftPress();
-        qDebug() << "----left----";
+        qDebug() << "---- left x:" << p.x() << " y:"<< p.y() << " ----";
     }
-    if (e->button() == Qt::RightButton) emit rightPress();
+    if (e->button() == Qt::RightButton) {
+        emit rightPress();
+        qDebug() << "---- right ----";
+    }
 }
 
 MainWindow::~MainWindow()

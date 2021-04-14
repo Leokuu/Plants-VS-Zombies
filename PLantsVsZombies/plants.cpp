@@ -129,7 +129,7 @@ void PeaShooter::fight()        //植物攻击
         if (!Zombies::ifEmptyInALine(this->postion.y()))
         {
             //发射豌豆 biubiubiu
-            Bullets::addABullet(myWindow, postion.y(), postion.x());
+            Bullets::addABullet(myWindow, postion.y(), postion.x(), atk);
         }
     });
 }

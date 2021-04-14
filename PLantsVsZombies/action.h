@@ -34,6 +34,7 @@ public:
     //void zombieWave(QLabel *label, QString path, int frameNum, int time);
     //攻击
     //void peaFight(QLabel *label);
+    int xPox(){return this->xPos;}
 
 public slots:
     void move();
@@ -53,6 +54,8 @@ private:
     int startY;         //初始Y轴位置
     int endX;           //结束X轴位置
     int endY;           //结束Y轴位置
+    int xPos;           //实时X坐标
+    int yPos;           //实时Y坐标
     int moveNum;        //移动次数
     float preX;         //一次移动X轴距离
     float preY;         //一次移动Y轴距离

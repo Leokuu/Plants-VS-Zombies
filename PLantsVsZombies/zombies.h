@@ -27,6 +27,7 @@ public:
     static void addAZombie(MainWindow *parent, uint8_t line);
     static bool ifEmptyInALine(uint8_t line);
     static Zombies *firstZombie(uint8_t line);
+    static void dieDetection();
 
 protected:
     MainWindow *myWindow;

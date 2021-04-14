@@ -17,6 +17,8 @@ Zombies::Zombies(MainWindow *parent, int line)
 {
     this->myWindow = parent;
     this->line = line;
+
+    qDebug() << "Place a zombie in line " << line;
 }
 
 void Zombies::zombieInit(int frameNum, int hp, int atk, int speed, int state)
@@ -40,7 +42,7 @@ void Zombies::fight()
 
 void Zombies::injury(int atk)
 {
-    atk = atk;
+    atk = atk + 1;
 }
 
 void Zombies::injuryBlink()
@@ -87,10 +89,31 @@ Zombies *Zombies::firstZombie(uint8_t line)
 
 bool Zombies::ifEmptyInALine(uint8_t line)
 {
-    if (Zombies::zombiesVector[line].size() == 0)
+    Zombies *z = Zombies::firstZombie(line);
+
+    if (!z || z->getPostion() > 800)
         return true;
-    else
-        return false;
+
+    return false;
+}
+
+
+void Zombies::dieDetection()
+{
+    for (int i=0; i<5; i++)
+    {
+        ZombiesVector &zv = Zombies::zombiesVector[i];
+        ZombiesVector::iterator j;
+
+        for (j=zv.begin(); j<zv.end(); j++)
+        {
+            if ((*j)->state == 3)
+            {
+                (*j)->deleteLater();
+                zv.erase(j);
+            }
+        }
+    }
 }
 
 
@@ -132,6 +155,9 @@ void NormalZombie::fight()
 
 void NormalZombie::injury(int atk)
 {
+    if (state == 2 || state == 3)
+        return;
+
     this->hp -= atk;
     QTimer *timer0 = new QTimer();
     QMovie *m = new QMovie(QString("%1ZombieHead.gif").arg(path));
@@ -157,7 +183,7 @@ void NormalZombie::injury(int atk)
     });
 
     QTimer *timer1 = new QTimer();
-    if (hp <=0 && state == 1)
+    if (hp <=0 && state == 1)       //死亡
     {
         this->state = 2;
         myGif->stop();
@@ -166,7 +192,10 @@ void NormalZombie::injury(int atk)
         timer1->start(2000);
         action->widgetMove(label, -10, 0, 500);
     }
-    connect(timer1, &QTimer::timeout, [=]()mutable{this->state = 3;});
+    connect(timer1, &QTimer::timeout, [=]()mutable{
+        this->state = 3;
+        label->hide();
+    });
 }
 
 NormalZombie::~NormalZombie()

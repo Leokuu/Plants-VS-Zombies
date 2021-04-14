@@ -59,7 +59,7 @@ void Scene::mapDaytime()
     });
 
     //选上场植物
-    connect(this, &this->startLoadCard, [=](){
+    connect(this, &Scene::startLoadCard, [=](){
 
         this->myCard->cardShow();          //开始卡片选择
 
@@ -71,7 +71,7 @@ void Scene::mapDaytime()
 
         connect(myCard, &Card::CanStartFighting, [=](){     //选卡结束后显示开始战斗按钮
             startButton->show();
-            connect(startButton, &QPushButton::clicked, this, &this->startFighting);   //一大波僵尸即将来临
+            connect(startButton, &QPushButton::clicked, this, &Scene::startFighting);   //一大波僵尸即将来临
         });
 
         connect(myCard, &Card::CannotStartFighting, [=](){ //上场植物卡满选下来一张后隐藏开始战斗按钮
@@ -98,16 +98,16 @@ void Scene::startFighting()         //开始战斗
 
     timer = new QTimer(this);
     this->timer->start(timerFrequency);
-    connect(timer, &QTimer::timeout, this, this->fightDetecion);
+    connect(timer, &QTimer::timeout, this, &Scene::fightDetecion);
 
     myCard->fightingMode();             //开始战斗
-    connect(myCard, &Card::PlcaePlant, this, this->placeOnePlant);
+    connect(myCard, &Card::PlcaePlant, this, &Scene::placeOnePlant);
 
     //铲子
     this->shover = new QPushButton(myWindow);
     shover->setFlat(true);
     shover->setIcon(QIcon(QString("../graphics/Screen/shovel.png")));                    //设置图表
-    shover->setIconSize(QSize(70,74));
+    shover->setIconSize(QSize(70, 74));
     shover->setGeometry(522, 0, 70, 74);     //设置位置，大小
     shover->setMouseTracking(true);
     shover->show();
@@ -160,7 +160,7 @@ void Scene::placeOnePlant(int n)    //放置植物,n是植物代号
         case snowpea:    plant = new SnowPea(myWindow);break;
         case chomper:    plant = new Chomper(myWindow);break;
         case repeaterpea:plant = new RepeaterPea(myWindow);break;
-        default: plant = new PeaShooter(myWindow);break;
+        default:         plant = new PeaShooter(myWindow);break;
     }
 
     //放置植物
@@ -185,14 +185,8 @@ void Scene::zombiesManage()         //僵尸管理函数
     //左键出僵尸
     connect(myWindow, &MainWindow::leftPress, [=](){
         QPoint p = myWindow->getMousePostion();
-        int n = (p.y()-80)/100;
-
-        qDebug() << "I want a zombie in line: " << n;
-        qDebug() << p.x() << p.y();
-
-        Zombies::addAZombie(myWindow, n);
+        Zombies::addAZombie(myWindow, (p.y()-80)/100);
     });
-
 
 }
 
@@ -203,14 +197,24 @@ void Scene::bulletManage()
 
 void Scene::fightDetecion()
 {
+    int atk;
+    Zombies *zombie;
+
     for (uint8_t i=0; i<5; i++) {
+        // 检测子弹是否射出地图
+        Bullets::outOfMapDetection(i);
+        // 检测是否达到第一只僵尸
+        zombie = Zombies::firstZombie(i);
+        if (zombie)
+        {
+             atk = Bullets::collsionDetection(i, zombie->getPostion());
+             if (atk > 0)
+                 zombie->injury(atk);
+        }
+    }    
 
-        BulletsVector::iterator j;
-
-
-        //connect(action, &Action::peaPos, [=](int peaPosX){      //打到僵尸没有
-
-    }
+    //僵尸死亡检测
+    Zombies::dieDetection();
 }
 
 /*   card对应表
