@@ -21,14 +21,13 @@ public:
 
     static void addABullet(MainWindow *parent, int line, int xPos, int atk);
     static int collsionDetection(int line, int xPos);
-    static void outOfMapDetection(int line);
+    static void outOfMapDetection(void);
 
 protected:
     MainWindow *myWindow;
     QString path;
     Action *action;
     QLabel *bullet;
-    QMovie *myGif;
     QMovie *pathBullet;
     QMovie *pathExplosion;
 

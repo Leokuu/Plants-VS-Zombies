@@ -126,7 +126,7 @@ void PeaShooter::fight()        //植物攻击
     timer->start(1400);                 //计时器1400ms刷新一次
     // 生产一个子弹
     connect(timer, &QTimer::timeout, [=](){
-        if (!Zombies::ifEmptyInALine(this->postion.y()))
+        if (fightState && !Zombies::ifEmptyInALine(this->postion.y()))
         {
             //发射豌豆 biubiubiu
             Bullets::addABullet(myWindow, postion.y(), postion.x(), atk);

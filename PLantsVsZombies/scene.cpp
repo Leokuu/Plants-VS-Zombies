@@ -200,16 +200,18 @@ void Scene::fightDetecion()
     int atk;
     Zombies *zombie;
 
+    // 检测子弹是否射出地图
+    Bullets::outOfMapDetection();
+
     for (uint8_t i=0; i<5; i++) {
-        // 检测子弹是否射出地图
-        Bullets::outOfMapDetection(i);
         // 检测是否达到第一只僵尸
         zombie = Zombies::firstZombie(i);
+
         if (zombie)
         {
-             atk = Bullets::collsionDetection(i, zombie->getPostion());
-             if (atk > 0)
-                 zombie->injury(atk);
+            atk = Bullets::collsionDetection(i, zombie->getPostion());
+            if (atk > 0)
+                zombie->injury(atk);
         }
     }    
 

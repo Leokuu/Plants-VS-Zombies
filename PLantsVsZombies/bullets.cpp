@@ -17,7 +17,7 @@ Bullets::Bullets(MainWindow *parent, int line, int xPos, int atk)
     bullet->setScaledContents(true);
     pathBullet->start();
 
-    bullet->setGeometry(xPos*82+100, line*100+90, 56, 34);  
+    bullet->setGeometry(xPos*82+100, line*100+90, 56, 34);
     bullet->show();
     bullet->raise();
     action->widgetMove(bullet,1000,0,3000,line);
@@ -29,30 +29,38 @@ void Bullets::fight()
 
     action->blockSignals(true);
     bullet->hide();
-    Action *action_boom = new Action();
     QLabel *label_boom = new QLabel(myWindow);
+    QTimer *timer_boom = new QTimer(myWindow);
     label_boom->setMovie(pathExplosion);
     pathExplosion->start();
     label_boom->setGeometry(action->xPox(), line*100+90, 52, 46);
     label_boom->show();
+    label_boom->raise();
     bullet->setMouseTracking(true);
-    action->widgetMove(label_boom, 0, 0, 200);
-    connect(action, &Action::moveFinish, [=](){
-        delete action_boom;
+    timer_boom->start(250);
+    connect(timer_boom, &QTimer::timeout, [=](){
+        delete timer_boom;
         delete label_boom;
-        qDebug() << "explose finish";
+        this->deleteLater();
     });
 }
 
 
 Bullets::~Bullets()
 {
-    qDebug() << "bullet delete";
+    BulletsVector &bv = bulletsVector[line];
+    BulletsVector::iterator i;
+
+    qDebug();
+    for (i=bv.begin(); i!=bv.end(); i++)
+    {
+        qDebug() << "b xpos:" << (*i)->action->xPox();
+
+    }
+    qDebug() << "Bullets::~Bullets";
 
     delete action;
     delete bullet;
-
-    delete myGif;
     delete pathBullet;
     delete pathExplosion;
 }
@@ -76,13 +84,6 @@ void Bullets::addABullet(MainWindow *parent, int line, int xPos, int atk)
     // 添加子弹
     bv.insert(i, b);
 
-    for (i=bv.begin(); i!=bv.end(); i++)
-    {
-        qDebug() << "b xpos:" << (*i)->action->xPox();
-
-    }
-    qDebug();
-
 }
 
 int Bullets::collsionDetection(int line, int xPos)
@@ -100,29 +101,30 @@ int Bullets::collsionDetection(int line, int xPos)
         // 打到僵尸，计算伤害
         allAtk += (*i)->atk;
         (*i)->fight();
-        (*i)->deleteLater();
         bv.erase(i);
     }
 
     return allAtk;
 }
 
-void Bullets::outOfMapDetection(int line)
+void Bullets::outOfMapDetection(void)
 {
-    BulletsVector &bv = bulletsVector[line];
-    BulletsVector::iterator i;
-
-    for (i=bv.begin(); i!=bv.end(); i++)
+    for (uint8_t j=0; j<5; j++)
     {
-        // 超出地图
+        BulletsVector &bv = bulletsVector[j];
+        BulletsVector::iterator i;
 
-        if ((*i)->action->xPox() > 850)
+        for (i=bv.begin(); i!=bv.end(); i++)
         {
-            qDebug() << "out of map";
-            delete (*i);
-            bv.erase(i);
+            // 超出地图
+            if ((*i)->action->xPox() > 850)
+            {
+                qDebug() << "out of map";
+                //(*i)->deleteLater();
+                bv.pop_front();
+            }
+            else    //后面的都不会超了
+                break;
         }
-        else    //后面的都不会超了
-            break;
     }
 }

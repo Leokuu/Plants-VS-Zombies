@@ -103,14 +103,18 @@ void Zombies::dieDetection()
     for (int i=0; i<5; i++)
     {
         ZombiesVector &zv = Zombies::zombiesVector[i];
-        ZombiesVector::iterator j;
-
-        for (j=zv.begin(); j<zv.end(); j++)
+        int j=0;
+        while (j < zv.size())
         {
-            if ((*j)->state == 3)
+            if (zv.at(j)->state == 3)
             {
-                (*j)->deleteLater();
-                zv.erase(j);
+                qDebug() << "zombie die";
+                zv.at(j)->deleteLater();
+                zv.erase(zv.begin()+j);
+            }
+            else
+            {
+                j++;
             }
         }
     }
